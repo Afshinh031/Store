@@ -102,9 +102,19 @@ namespace TopLearn.Core.Services.Service
                 UserImage = u.UserImage,
                 UserIsActive = u.UserIsActive,
                 UserName = u.UserName,
-                UserRol = "کاربر",
+                UserRol = GetUserRolesTitle(u.UserID),
                 UserAbout = u.UserAbout
             }).OrderByDescending(o => o.UserDateTime).Skip(skip).Take(take).ToList();
+        }
+
+        public List<string> GetUserRolesTitle(int userId)
+        {
+            List<int> rolesId = _context.UserRoles.Where(r=>r.UserID==userId).Select(r=>r.RoleID).ToList();
+            List<string> rolesTitle = new List<string>();
+            foreach (var roleId in rolesId) {
+                rolesTitle.Add(_context.Roles.Where(x => x.RoleID == roleId).Select(x => x.RoleTitle).SingleOrDefault());
+            }
+            return rolesTitle;
         }
     }
 

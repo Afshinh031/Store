@@ -136,7 +136,7 @@ namespace TopLearn.Web.Areas.User.Controllers
             userViewModel.UserBirthday = user.UserBirthday;
             userViewModel.UserImage = user.UserImage;
             userViewModel.UserAbout = user.UserAbout;
-            userViewModel.UserRol = "کاربر";
+            userViewModel.UserRol = _userService.GetUserRolesTitle(user.UserID);
             userViewModel.UserIsActive = user.UserIsActive;
             userViewModel.UserDateTime = user.UserDateTime;
             #endregion

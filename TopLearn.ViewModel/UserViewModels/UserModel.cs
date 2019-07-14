@@ -31,7 +31,7 @@ namespace TopLearn.ViewModel.UserViewModels
         public string UserImage { get; set; }
 
         public string UserAbout { get; set; }
-        public string UserRol { get; set; }
+        public List<string> UserRol { get; set; }
 
         public bool UserIsActive { get; set; }
 

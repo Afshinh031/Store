@@ -46,7 +46,15 @@
                                 </li>
 
                                 <li class="list-group-item">
-                                    <b>نقش</b> <a class="pull-left">@Model.UserViewModel.UserRol</a>
+                                    <b>نقش ها</b> <div class="pull-left">
+
+                                        @foreach (var role in Model.UserViewModel.UserRol)
+                                        {
+                                            <span class="label label-primary">@role.ToString()</span>
+                                        }
+
+
+                                    </div>
                                 </li>
                             </ul>
                         </div>

@@ -8,7 +8,7 @@ namespace TopLearn.Core.Services.Interfaces
 {
     public interface IUserService
     {
-        List<UserViewModel> GetAllUser(int skip, int take,int userOnline,bool isDelete);
+        List<UserViewModel> GetAllUser(int skip, int take, int userOnline, bool isDelete);
         List<UserInactiveViewModel> GetUsersInactive(int skip, int take);
         User GetUserById(int userId);
         int UserCount(bool isActive);
@@ -20,7 +20,7 @@ namespace TopLearn.Core.Services.Interfaces
         User GetUserByActiveCode(string activeCode);
         bool LoginUser(LoginViewModel login);
         bool UserNameIsExist(string userName);
-
+        List<string> GetUserRolesTitle(int userId);
         void DisposeUser();
     }
 
