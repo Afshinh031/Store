@@ -1,0 +1,13 @@
+/*CMS custom style*/
+/*start css reset*/
+/*end css reset*/
+textarea {
+    resize: none
+}
+
+.fas {
+    margin: 10px
+}
+.listStyleTypeNone {
+    list-style-type: none !important;
+}

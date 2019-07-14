@@ -1,0 +1,111 @@
+﻿@model IEnumerable<TopLearn.ViewModel.UserViewModels.RoleViewModel>
+@using TopLearn.Utility.Convertor
+@{
+    ViewData["Title"] = "نقش ها";
+}
+
+
+    <section class="content-header">
+        <h1>
+            <small>پنل مدیریت کاربران</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> پنل</a></li>
+            <li class="active">نقش ها</li>
+        </ol>
+        <br />
+        <a asp-action="CreateRole" class="btn btn-primary">افزودن نقش جدید</a>
+    </section>
+<section class="content">
+    <div class="row">
+        <div class="col-lg-8 col-md-8">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">نقش ها</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body" style="">
+                    <div class="table-responsive">
+                        <table class="table no-margin">
+                            <thead>
+                                <tr class="text-center">
+                                    <th class="text-center">عنوان</th>
+                                    <th class="text-center">وضعیت</th>
+                                    <th class="text-center">تاریخ ثبت</th>
+                                    <th class="text-center">عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var role in Model)
+                                {
+                                    <tr class="text-center">
+                                        <td><a>@role.RoleTitle</a></td>
+                                        <td>
+                                            @if (role.RoleActive)
+                                            {
+                                                <div class="label label-success">فعال</div>
+                                            }
+                                            else
+                                            {
+                                                <div class="label label-danger">غیر فعال</div>
+                                            }
+                                        </td>
+                                        <td class="text-center" style="direction: initial;">@role.RoleDateTime.ToShamsi()</td>
+                                        <td>
+                                            <a asp-action="RoleInfo" asp-route-roleId="@role.RoleID" class="btn btn-info"><i class="fa fa-info"></i></a>
+                                            <a data-toggle="modal" data-target="#RoleModal" onclick="RoleEdite(@role.RoleID)" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                                            <button data-toggle="modal" data-target="#RoleModal" onclick="RoleDelete(@role.RoleID)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.table-responsive -->
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer clearfix" style="">
+                </div>
+                <!-- /.box-footer -->
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="RoleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4   class="modal-title" id="RoleModalHeader">Modal title</h4>
+            </div>
+            <div id="RoleModalBody" class="modal-body">
+       
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{ 
+<script>
+    function RoleInfo(roleId) {
+        $.get("/Admin/Roles/RoleInfo?roleId="+roleId, function (result) {
+            alert(result);
+        });
+    }
+
+</script>
+
+}

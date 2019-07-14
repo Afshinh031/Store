@@ -1,0 +1,119 @@
+﻿@model TopLearn.ViewModel.UserViewModels.CreateRoleViewModel
+@{
+    ViewData["Title"] = "افزودن نقش جدید";
+    List<TopLearn.ViewModel.PermissionViewModel.PermissionsViewModel> permissions = ViewBag.Permissions as List<TopLearn.ViewModel.PermissionViewModel.PermissionsViewModel>
+    ;
+}
+<section class="content">
+    <form method="post" id="roleForm" asp-action="CreateRole">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">نقش جدید</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <div class="input-group">
+                                <span class="input-group-addon">عنوان نقش</span>
+                                <input asp-for="RoleTitle" type="text" class="form-control" placeholder="عنوان">
+                            </div>
+                            <br />
+
+                            <input type="submit" value="ثبت" class="form-control btn btn-success" />
+
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-5">
+                <div class="box box-danger">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">دسترسی ها</h3>
+                        <div class="box-tools pull-right">
+
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body no-padding" style="">
+                        <ul class="listStyleTypeNone">
+                            @foreach (var p in permissions.Where(p => p.ParentID == null))
+                            {
+                                <li>
+                                    <label>
+                                        <input name="PermissionsId" type="checkbox" value="@p.PermissionId" />
+                                        @p.PermissionTitle
+                                    </label>
+                                    @foreach (var p2 in permissions.Where(p2 => p2.ParentID == p.PermissionId))
+                                    {
+                                        <ul class="listStyleTypeNone">
+                                            <li>
+                                                <label>
+
+                                                    <input name="PermissionsId" type="checkbox" value="@p2.PermissionId" />
+                                                    @p2.PermissionTitle
+                                                </label>
+
+                                                @foreach (var p3 in permissions.Where(p3 => p3.ParentID == p2.PermissionId))
+                                                {
+                                                    <ul class="listStyleTypeNone">
+                                                        <li>
+                                                            <label>
+
+                                                                <input name="PermissionsId" type="checkbox" value="@p3.PermissionId" />
+                                                                @p3.PermissionTitle
+                                                            </label>
+
+
+                                                        </li>
+
+                                                    </ul>
+                                                }
+                                            </li>
+
+                                        </ul>
+                                    }
+
+
+                                </li>
+                            }
+
+                        </ul>
+                        <!-- /.users-list -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</section>
+@section Scripts{
+    <script>
+        $("#roleForm").submit(function (event) {
+            var name = isEmptyRoleName($("RoleTitle").val());
+            
+                alert(name);
+                event.preventDefault();
+     
+        });
+
+        function isEmptyRoleName(str) {
+            return !str.replace(/\s+/, '').length;
+        }
+    </script>
+
+}

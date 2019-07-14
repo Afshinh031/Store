@@ -1,0 +1,47 @@
+﻿@model TopLearn.ViewModel.UserViewModels.RoleViewModel
+@using TopLearn.Utility.Convertor
+
+    <section class="content">
+        @if (Model != null)
+        {
+            ViewData["Title"] = "اطلاعات نقش " + Model.RoleTitle;
+
+
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Widget: user widget style 1 -->
+                    <div class="box box-widget widget-user-2">
+                        <!-- Add the bg color to the header using any of the bg-* classes -->
+                        <div class="widget-user-header bg-yellow">
+                            <!-- /.widget-user-image -->
+                            <h3 class="widget-user-username">@Model.RoleTitle</h3>
+
+                        </div>
+                        <div class="box-footer no-padding">
+                            <ul class="nav nav-stacked">
+                                <li><a href="#">تاریخ ثبت <div style="direction:initial" class="pull-left">@Model.RoleDateTime.ToShamsi()</div></a></li>
+                                @*<li><a href="#">کار <span class="pull-left badge bg-aqua">5</span></a></li>
+                                <li><a href="#">هدف <span class="pull-left badge bg-green">12</span></a></li>
+                                <li><a href="#">فالوور <span class="pull-left badge bg-red">842</span></a></li>*@
+                            </ul>
+                        </div>
+                        <a style="margin:10px" asp-action="Index" class="btn btn-primary">بازگشت به لیست نقش ها</a>
+                      
+                    </div>
+                    <!-- /.widget-user -->
+                </div>
+            </div>
+        }
+        else
+        {
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-danger">اطلاعات ارسالی معتبر نیست</div>
+                    <a asp-action="Index" class="btn btn-primary">بازگشت به لیست نقش ها</a>
+                </div>
+            </div>
+
+        }
+    </section>
