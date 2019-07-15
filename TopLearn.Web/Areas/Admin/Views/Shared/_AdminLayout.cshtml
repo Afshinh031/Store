@@ -90,6 +90,11 @@
                         <a href="index.html">
                             <i class="fa fa-dashboard"></i> <span>داشبرد</span>
                         </a>
+                    </li> 
+                    <li>
+                        <a asp-area="Admin" asp-controller="Roles" asp-action="Index">
+                            <i class="fa fa-dashboard"></i> <span>نقش ها و دسترسی ها</span>
+                        </a>
                     </li>
                     <li>
                         <a href="widgets.html">
@@ -110,7 +115,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/Admin/Users">
+                        <a asp-area="Admin" asp-controller="Users" asp-action="Index">
                             <i class="fas fa-users"></i> <span>کاربران</span>
                         </a>
                     </li>

@@ -10,6 +10,7 @@ namespace TopLearn.Core.Services.Interfaces
     {
         List<RoleViewModel> GetAllRoles();
         RoleViewModel GetAllRoleByRileId(int roleId);
+        List<string> GetRolePermissions(int roleId);
     }
     public interface IRoleRepository {
         int InsertRole(string roleName,int userId);

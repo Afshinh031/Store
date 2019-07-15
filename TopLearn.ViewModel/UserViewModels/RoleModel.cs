@@ -34,4 +34,11 @@ namespace TopLearn.ViewModel.UserViewModels
         [Display(Name = "وضعیت")]
         public bool RoleActive { get; set; }
     }
+
+    public class RoleInfoViewModel {
+        public RoleViewModel roleViewModel { get; set; }
+        public List<string> rolePermission { get; set; }
+
+    }
+
 }

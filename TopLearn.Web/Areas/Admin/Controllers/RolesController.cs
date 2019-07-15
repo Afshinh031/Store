@@ -62,7 +62,10 @@ namespace TopLearn.Web.Areas.Admin.Controllers
         [Route("Admin/RoleInfo/{roleId}")]
         public IActionResult RoleInfo(int roleId)
         {
-            return View(_roleService.GetAllRoleByRileId(roleId));
+            RoleInfoViewModel roleInfoViewModel = new RoleInfoViewModel();
+            roleInfoViewModel.roleViewModel = _roleService.GetAllRoleByRileId(roleId);
+            roleInfoViewModel.rolePermission = _roleService.GetRolePermissions(roleId);
+            return View(roleInfoViewModel);
         }
 
     }

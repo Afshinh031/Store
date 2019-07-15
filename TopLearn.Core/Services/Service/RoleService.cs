@@ -9,7 +9,7 @@ using TopLearn.ViewModel.UserViewModels;
 
 namespace TopLearn.Core.Services.Service
 {
-    public class RoleService: IRoleService
+    public class RoleService : IRoleService
     {
         private TopLearnContext _context;
 
@@ -20,14 +20,14 @@ namespace TopLearn.Core.Services.Service
 
         public List<RoleViewModel> GetAllRoles()
         {
-           return _context.Roles.Where(r => r.isDelete == false).OrderByDescending(r=>r.RoleDateTime).Select(r => new RoleViewModel()
+            return _context.Roles.Where(r => r.isDelete == false).OrderByDescending(r => r.RoleDateTime).Select(r => new RoleViewModel()
             {
-                RoleActive=r.RoleActive,
-                RoleDateTime=r.RoleDateTime,
-                RoleEditeDateTime=r.RoleEditeDateTime,
-                RoleID=r.RoleID,
-                RoleTitle=r.RoleTitle,
-                UserEditorID=r.UserEditorID
+                RoleActive = r.RoleActive,
+                RoleDateTime = r.RoleDateTime,
+                RoleEditeDateTime = r.RoleEditeDateTime,
+                RoleID = r.RoleID,
+                RoleTitle = r.RoleTitle,
+                UserEditorID = r.UserEditorID
 
             }).ToList();
         }
@@ -36,7 +36,8 @@ namespace TopLearn.Core.Services.Service
 
         public RoleViewModel GetAllRoleByRileId(int roleId)
         {
-            return _context.Roles.Where(r => r.RoleID == roleId).Select(r=>new RoleViewModel() {
+            return _context.Roles.Where(r => r.RoleID == roleId).Select(r => new RoleViewModel()
+            {
                 RoleActive = r.RoleActive,
                 RoleDateTime = r.RoleDateTime,
                 RoleEditeDateTime = r.RoleEditeDateTime,
@@ -46,7 +47,19 @@ namespace TopLearn.Core.Services.Service
             }).SingleOrDefault();
         }
 
-
+        public List<string> GetRolePermissions(int roleId)
+        {
+            List<int> permissionsId = _context.RolePermissions.Where(p => p.RoleId == roleId).Select(p => p.PermissionId).ToList();
+            List<string> permissionsTitle = new List<string>();
+            if (permissionsTitle != null)
+            {
+                foreach (var permissionId in permissionsId)
+                {
+                    permissionsTitle.Add(_context.Permissions.Where(x => x.PermissionId == permissionId && x.PermissionTitle != "مدیر").Select(x => x.PermissionTitle).SingleOrDefault());
+                }
+            }
+            return permissionsTitle;
+        }
     }
     public class RoleRepository : IRoleRepository
 
@@ -59,12 +72,13 @@ namespace TopLearn.Core.Services.Service
         }
         public int InsertRole(string roleName, int userId)
         {
-            Role role = new Role() { 
-                RoleActive=true,
-                RoleTitle=roleName,
-                RoleDateTime=DateTime.Now,
-                isDelete=false,
-                UserID=userId,
+            Role role = new Role()
+            {
+                RoleActive = true,
+                RoleTitle = roleName,
+                RoleDateTime = DateTime.Now,
+                isDelete = false,
+                UserID = userId,
             };
             _context.Roles.Add(role);
             SaveRoles();
