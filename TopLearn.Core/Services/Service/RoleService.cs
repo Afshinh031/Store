@@ -20,6 +20,7 @@ namespace TopLearn.Core.Services.Service
 
         public List<RoleViewModel> GetAllRoles()
         {
+
             return _context.Roles.Where(r => r.isDelete == false).OrderByDescending(r => r.RoleDateTime).Select(r => new RoleViewModel()
             {
                 RoleActive = r.RoleActive,

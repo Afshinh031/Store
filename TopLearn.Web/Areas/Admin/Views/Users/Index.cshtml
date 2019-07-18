@@ -34,6 +34,7 @@ var userCount = Model.UserCount + 1;
                         <li><a href="#">کل کاربران <span class="pull-left badge bg-blue">@userCount</span></a></li>
                         <li><a href="#">کاربران فعال <span class="pull-left badge bg-aqua">@activeUser</span></a></li>
                         <li><a href="#">کاربران غیر فعال <span class="pull-left badge bg-red">@Model.UserInactiveCount</span></a></li>
+                        <li class="text-center" style="padding:10px 10px"><button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">افزودن کاربر</button></li>
                     </ul>
                 </div>
             </div>
@@ -140,17 +141,17 @@ var userCount = Model.UserCount + 1;
                             <tbod>
                                 @foreach (var item in Model.UserModel)
                                 {
-                                    <tr >
+                                    <tr>
                                         <td>@item.UserEmail</td>
                                         <td dir="ltr" align="right">@item.UserDateTime.ToShamsi()</td>
                                         <td>
                                             @if (item.UserIsActive)
                                             {
-                                                <div ><span class="alert alert-success">فعال</span></div>
+                                                <div><span class="alert alert-success">فعال</span></div>
                                             }
                                             else
                                             {
-                                                <div ><span class="alert alert-danger">غیر فعال</span></div>
+                                                <div><span class="alert alert-danger">غیر فعال</span></div>
                                             }
                                         </td>
 
@@ -191,3 +192,77 @@ var userCount = Model.UserCount + 1;
 
 
 
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="post" asp-area="Admin" asp-controller="Users" asp-action="Index">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">افزودن کاربر</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-7 col-md-7">
+                            <input type="hidden" asp-for="PageNumber" />    
+                            <input class="form-control" asp-for="UserEmail" />
+                            <br />
+                            <input  class="form-control" asp-for="UserPassworld" />
+                            <br />
+                            <br />
+                            <div asp-validation-summary="All" class="text-red"></div>
+                        </div>
+                        <div class="col-lg-5 col-md-5">
+                            <div class="box box-warning direct-chat direct-chat-warning">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">نقش ها</h3>
+                                    <div class="box-tools pull-right">
+                                      
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                     
+
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    <!-- Conversations are loaded here -->
+                                    <div class="direct-chat-messages">
+                                        <!-- Message. Default to the left -->
+                                        @foreach (var role in Model.roleViewModels)
+
+                                        {
+                                           
+                                        <div class="direct-chat-msg">
+                                            
+                                            <!-- /.direct-chat-img -->
+                                            <label class="direct-chat-text" style="cursor:pointer;">
+                                                <input type="checkbox" name="roleId" value="@role.RoleID" />
+                                                @role.RoleTitle
+                                            </label>
+                                            <!-- /.direct-chat-text -->
+                                        </div>
+                                            <!-- /.direct-chat-msg -->
+                                        }
+                                    </div>
+                                    <!--/.direct-chat-messages-->
+                               
+                                </div>
+                           
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                    <input type="reset" class="btn btn-warning" value="خالی کردن فرم" />
+                    <input type="submit" class="btn btn-primary" value="افزودن کاربر" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

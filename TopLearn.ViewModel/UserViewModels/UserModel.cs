@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using TopLearn.ViewModel.PermissionViewModel;
 
 namespace TopLearn.ViewModel.UserViewModels
 {
@@ -91,10 +92,30 @@ namespace TopLearn.ViewModel.UserViewModels
 
     public class UserAdminPanelViewModel
     {
-
+        public int PageNumber { get; set; }
         public List<UserViewModel> UserModel { get; set; }
         public int UserInactiveCount { get; set; }
         public int UserCount { get; set; }
+        public List<RoleViewModel> roleViewModels { get; set; }
+        public AddUserAdminPanelViewModel addUserAdminPanelViewModel { get; set; }
+        [Display(Name = "ایمیل")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [MaxLength(300, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد .")]
+        [EmailAddress(ErrorMessage = "ایمیل وارد شده معتبر نیست")]
+        public string UserEmail { get; set; }
+
+        [Display(Name = "کلمه عبور")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [MaxLength(200, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد .")]
+        public string UserPassworld { get; set; }
+
+        public List<int> roleId { get; set; }
     }
+    public class AddUserAdminPanelViewModel
+    {
+
+    }
+
+
     #endregion
 }

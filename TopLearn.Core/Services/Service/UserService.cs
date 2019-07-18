@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using TopLearn.Core.Services.Interfaces;
 using TopLearn.DataLayer.Context;
 using TopLearn.DataLayer.Entities.User;
@@ -88,9 +89,9 @@ namespace TopLearn.Core.Services.Service
             }).OrderByDescending(o => o.UserDateTime).Skip(skip).Take(take).ToList();
         }
 
-        public List<UserViewModel> GetAllUser(int skip, int take, int userOnline, bool isDelete)
+        public  List<UserViewModel> GetAllUser(int skip, int take, int userOnline, bool isDelete)
         {
-            return _context.Users.Where(u=>u.UserID != userOnline && u.UserIsActive==true && u.isDelete == isDelete).Select(u => new UserViewModel
+            return  _context.Users.Where(u=>u.UserID != userOnline  && u.isDelete == isDelete).Select(u => new UserViewModel
             {
                 UserId = u.UserID,
                 UserEmail = u.UserEmail,
@@ -102,14 +103,15 @@ namespace TopLearn.Core.Services.Service
                 UserImage = u.UserImage,
                 UserIsActive = u.UserIsActive,
                 UserName = u.UserName,
-                UserRol = GetUserRolesTitle(u.UserID),
+               
                 UserAbout = u.UserAbout
             }).OrderByDescending(o => o.UserDateTime).Skip(skip).Take(take).ToList();
         }
 
         public List<string> GetUserRolesTitle(int userId)
         {
-            List<int> rolesId = _context.UserRoles.Where(r=>r.UserID==userId).Select(r=>r.RoleID).ToList();
+            List<int> rolesId = new List<int>();
+            rolesId=_context.UserRoles.Where(r=>r.UserID==userId).Select(r=>r.RoleID).ToList();
             List<string> rolesTitle = new List<string>();
             foreach (var roleId in rolesId) {
                 rolesTitle.Add(_context.Roles.Where(x => x.RoleID == roleId).Select(x => x.RoleTitle).SingleOrDefault());
@@ -132,7 +134,7 @@ namespace TopLearn.Core.Services.Service
             try
             {
                 _context.Users.Add(user);
-
+                _context.SaveChanges();
                 return user.UserID;
             }
             catch 

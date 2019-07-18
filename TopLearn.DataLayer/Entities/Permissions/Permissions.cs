@@ -11,12 +11,14 @@ namespace TopLearn.DataLayer.Entities.Permissions
         [Key]
         public int PermissionId { get; set; }
 
-        [Display(Name = "عنوان نقش")]
+        [Display(Name = "عنوان دسترسی")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(200, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد .")]
         public string PermissionTitle { get; set; }
         public int? ParentID { get; set; }
 
+        public string ControllerName { get; set; }
+        public string ActionName { get; set; }
 
         [ForeignKey("ParentID")]
         public List<Permissions> Permission { get; set; }

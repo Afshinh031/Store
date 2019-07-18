@@ -84,11 +84,9 @@ namespace TopLearn.Web.Controllers
                 UserDescription = "ثیت نام",
             };
             int userId = _userRepository.InsertUser(user);
-            if (userId >= 0)
+            if (userId <= 0)
             {
                 ModelState.AddModelError("UserEmail", "خطا در ثبت اطلاعات");
-                userRegisterViewModel.UserPassword = null;
-                userRegisterViewModel.UserConfigortionPassword = null;
                 return View(userRegisterViewModel);
             }
             List<int> rolesId= new List<int>();
