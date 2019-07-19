@@ -15,6 +15,8 @@ namespace TopLearn.Web.Areas.Admin.Controllers
         {
             _storeRepository = storeRepository;
         }
+
+        [PermissionChecker("Store")]
         public IActionResult Index()
         {
             return View();

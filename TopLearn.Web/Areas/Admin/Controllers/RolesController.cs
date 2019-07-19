@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TopLearn.Core.Security;
 using TopLearn.Core.Services.Interfaces;
 using TopLearn.Utility.TextTools;
 using TopLearn.ViewModel.PermissionViewModel;
@@ -28,6 +29,7 @@ namespace TopLearn.Web.Areas.Admin.Controllers
         }
 
         [Route("Admin/Roles")]
+        [PermissionChecker("Roles")]
         public IActionResult Index()
         {
             return View(_roleService.GetAllRoles());
@@ -35,6 +37,7 @@ namespace TopLearn.Web.Areas.Admin.Controllers
 
 
         [Route("Admin/CreateRole")]
+        [PermissionChecker("AddRoles")]
         public IActionResult CreateRole()
         {
             ViewBag.Permissions = _permissionService.GetAllPermissions();
@@ -43,6 +46,7 @@ namespace TopLearn.Web.Areas.Admin.Controllers
 
         [Route("Admin/CreateRole")]
         [HttpPost]
+        [PermissionChecker("AddRoles")]
         public IActionResult CreateRole(CreateRoleViewModel role)
         {
             if ((role.RoleTitle == "" || role.RoleTitle == null))
@@ -60,6 +64,7 @@ namespace TopLearn.Web.Areas.Admin.Controllers
         }
 
         [Route("Admin/RoleInfo/{roleId}")]
+        [PermissionChecker("Roles")]
         public IActionResult RoleInfo(int roleId)
         {
             RoleInfoViewModel roleInfoViewModel = new RoleInfoViewModel();

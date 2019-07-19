@@ -19,6 +19,7 @@ namespace TopLearn.DataLayer.Entities.Permissions
 
         public string ControllerName { get; set; }
         public string ActionName { get; set; }
+        public string PermissionName { get; set; }
 
         [ForeignKey("ParentID")]
         public List<Permissions> Permission { get; set; }

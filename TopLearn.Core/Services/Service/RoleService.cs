@@ -61,6 +61,11 @@ namespace TopLearn.Core.Services.Service
             }
             return permissionsTitle;
         }
+
+        public List<int> GetUserRolesId(int userId)
+        {
+            return _context.UserRoles.Where(x => x.UserID == userId).Select(x => x.RoleID).ToList();
+        }
     }
     public class RoleRepository : IRoleRepository
 

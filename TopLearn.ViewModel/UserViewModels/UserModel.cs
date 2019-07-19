@@ -110,6 +110,9 @@ namespace TopLearn.ViewModel.UserViewModels
         public string UserPassworld { get; set; }
 
         public List<int> roleId { get; set; }
+
+        public bool isSubPermissionsAddUser { get; set; }
+        public bool isSubPermissionsEditUser { get; set; }
     }
     public class AddUserAdminPanelViewModel
     {

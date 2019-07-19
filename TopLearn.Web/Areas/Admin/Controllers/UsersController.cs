@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TopLearn.Core.Security;
 using TopLearn.Core.Services.Interfaces;
 using TopLearn.Utility.Hasher;
 using TopLearn.Utility.TextTools;
@@ -12,20 +13,22 @@ using TopLearn.ViewModel.UserViewModels;
 namespace TopLearn.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
     public class UsersController : Controller
     {
         private IUserService _userService;
         private IRoleService _roleService;
         private IUserRepository _userRepository;
-        public UsersController(IUserService userService, IRoleService roleService,IUserRepository userRepository)
+        private IPermissionService _permissionService;
+        public UsersController(IUserService userService, IRoleService roleService,IUserRepository userRepository, IPermissionService permissionService)
         {
             _userService = userService;
             _roleService = roleService;
             _userRepository = userRepository;
+            _permissionService = permissionService;
         }
 
         [Route("Admin/Users")]
+        [PermissionChecker("AddUsers")]
         public IActionResult Index(int pageNumber = 1)
         {
             return View(GetUserInfo(pageNumber));
@@ -33,6 +36,7 @@ namespace TopLearn.Web.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("Admin/Users")]
+        [PermissionChecker("AddUsers")]
         public IActionResult Index([Bind("UserEmail,UserPassworld,roleId,PageNumber")] UserAdminPanelViewModel userAdminPanelViewModel)
         {
             string error = CheckUserInfo(userAdminPanelViewModel);
@@ -70,12 +74,15 @@ namespace TopLearn.Web.Areas.Admin.Controllers
         private UserAdminPanelViewModel GetUserInfo(int pageNumber = 1)
         {
             int skip = (pageNumber - 1) * 10;
+            int userId = Convert.ToInt32(User.Identity.Name);
             UserAdminPanelViewModel userAdminPanelViewModel = new UserAdminPanelViewModel();
-            userAdminPanelViewModel.UserModel = _userService.GetAllUser(skip, 10, Convert.ToInt32(User.Identity.Name), false);
+            userAdminPanelViewModel.UserModel = _userService.GetAllUser(skip, 10, userId, false);
             userAdminPanelViewModel.UserInactiveCount = userAdminPanelViewModel.UserModel.Where(u => u.UserIsActive == false).Count();
             userAdminPanelViewModel.UserCount = userAdminPanelViewModel.UserModel.Count;
             userAdminPanelViewModel.roleViewModels = _roleService.GetAllRoles();
             userAdminPanelViewModel.PageNumber = pageNumber;
+            userAdminPanelViewModel.isSubPermissionsAddUser = _permissionService.CheckPermission("AddUsers", userId);
+            userAdminPanelViewModel.isSubPermissionsEditUser = _permissionService.CheckPermission("EditUsers", userId);
             return userAdminPanelViewModel;
         }
         private string CheckUserInfo(UserAdminPanelViewModel userAdminPanelViewModel)
