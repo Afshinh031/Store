@@ -49,7 +49,7 @@ namespace TopLearn.Core.Services.Service
 
         public User GetUserByEmail(string email)
         {
-            return _context.Users.FirstOrDefault(u => u.UserEmail == email);
+            return _context.Users.SingleOrDefault(u => u.UserEmail == email);
         }
 
         public User GetUserByActiveCode(string activeCode)
