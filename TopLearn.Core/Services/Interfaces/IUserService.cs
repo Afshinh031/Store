@@ -21,6 +21,8 @@ namespace TopLearn.Core.Services.Interfaces
         bool LoginUser(LoginViewModel login);
         bool UserNameIsExist(string userName);
         List<string> GetUserRolesTitle(int userId);
+
+        bool ActivateUser(int userId, string userEmail,string description,bool isActiva);
         void DisposeUser();
     }
 

@@ -30,6 +30,7 @@ namespace TopLearn.ViewModel.UserViewModels
         public string UserBirthday { get; set; }
 
         public string UserImage { get; set; }
+        public string UserDescription { get; set; }
 
         public string UserAbout { get; set; }
         public List<string> UserRol { get; set; }
@@ -94,6 +95,7 @@ namespace TopLearn.ViewModel.UserViewModels
     {
         public int PageNumber { get; set; }
         public List<UserViewModel> UserModel { get; set; }
+        public List<UserInactiveViewModel> userInactiveViewModels { get; set; }
         public int UserInactiveCount { get; set; }
         public int UserCount { get; set; }
         public List<RoleViewModel> roleViewModels { get; set; }
@@ -113,6 +115,7 @@ namespace TopLearn.ViewModel.UserViewModels
 
         public bool isSubPermissionsAddUser { get; set; }
         public bool isSubPermissionsEditUser { get; set; }
+        public bool isSubPermissionsDeleteUser { get; set; }
     }
     public class AddUserAdminPanelViewModel
     {

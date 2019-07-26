@@ -11,3 +11,6 @@ textarea {
 .listStyleTypeNone {
     list-style-type: none !important;
 }
+.btn-danger {
+    margin-left: 0px !important;
+}

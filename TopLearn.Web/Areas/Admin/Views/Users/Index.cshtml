@@ -36,7 +36,7 @@ var userCount = Model.UserCount + 1;
                         <li><a href="#">کاربران غیر فعال <span class="pull-left badge bg-red">@Model.UserInactiveCount</span></a></li>
                         @if (Model.isSubPermissionsAddUser)
                         {
-                            <li class="text-center" style="padding:10px 10px"><button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">افزودن کاربر</button></li>
+                        <li class="text-center" style="padding:10px 10px"><button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">افزودن کاربر</button></li>
                         }
                     </ul>
                 </div>
@@ -73,25 +73,34 @@ var userCount = Model.UserCount + 1;
                                 </tr>
                             </thead>
                             <tbody>
-                                @*@foreach (var item in Model.UserInactiveViewModel)
-                                    {
-                                        <tr>
-                                            <td>@item.UserEmail</td>
-                                            <td dir="ltr" align="right">@item.UserDateTime.ToShamsi()</td>
-                                            <td>@item.UserDescription</td>
-                                            <td>
-                                                <button class="btn btn-warning btn-small" title="ویرایش اطلاعات کاربر">
-                                                    <i class="fa fa-edit"></i>
-                                                </button>
-                                                <button class="btn btn-danger btn-small" title="حذف کاربر">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                                <button class="btn btn-success btn-small" title="فعال سازی کاربر">
-                                                    <i class="fa fa-check"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    }*@
+                                @foreach (var item in Model.userInactiveViewModels)
+                                {
+                                <tr>
+                                    <td>@item.UserEmail</td>
+                                    <td dir="ltr" align="right">@item.UserDateTime.ToShamsi()</td>
+                                    <td><p>@item.UserDescription</p></td>
+                                    <td>
+                                        @if (Model.isSubPermissionsEditUser)
+                                        {
+                                        <button class="btn btn-warning btn-small" title="ویرایش اطلاعات کاربر">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+
+                                        <button class="btn btn-success btn-small" title="فعال سازی کاربر">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                        }
+
+                                        @if (Model.isSubPermissionsDeleteUser)
+                                        {
+                                        <button class="btn btn-danger btn-small" title="حذف کاربر">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                        }
+
+                                    </td>
+                                </tr>
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -144,37 +153,58 @@ var userCount = Model.UserCount + 1;
                             <tbod>
                                 @foreach (var item in Model.UserModel)
                                 {
-                                    <tr>
-                                        <td>@item.UserEmail</td>
-                                        <td dir="ltr" align="right">@item.UserDateTime.ToShamsi()</td>
-                                        <td>
+                                <tr>
+                                    <td>
+                                        @item.UserEmail
+
+                                    </td>
+                                    <td dir="ltr" align="right">@item.UserDateTime.ToShamsi()</td>
+                                    <td id="user_Active_@item.UserId">
+                                        @if (item.UserIsActive)
+                                        {
+                                        <div><span class="alert alert-success">فعال</span></div>
+                                        }
+                                        else
+                                        {
+                                        <div><span class="alert alert-danger">غیر فعال</span></div>
+                                        }
+                                    </td>
+
+
+
+                                    <td id="@item.UserId">
+                                        <input id="hiden_@item.UserEmail" type="hidden" value="@item.UserEmail" />
+                                        <input id="hiden_@item.UserId" type="hidden" value="@item.UserId" />
+                                        @if (Model.isSubPermissionsEditUser)
+                                        {
+                                        <button class="btn btn-warning btn-small" title="ویرایش اطلاعات کاربر">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        <label id="userActiveBtn_@item.UserId">
                                             @if (item.UserIsActive)
                                             {
-                                                <div><span class="alert alert-success">فعال</span></div>
+                                            <button onclick="DisabledUserModalShow('@item.UserEmail' , @item.UserId)" data-toggle="modal" data-target="#DisabledUserModal" class="btn btn-danger btn-small" style="margin-left: 0px" title="غیر فعال سازی کاربر">
+                                                <i class="fa fa-times"></i>
+                                            </button>
                                             }
                                             else
                                             {
-                                                <div><span class="alert alert-danger">غیر فعال</span></div>
+                                            <button class="btn btn-success btn-small" onclick="ActiveUser('@item.UserEmail' , @item.UserId)" title="فعال سازی کاربر">
+                                                <i class="fa fa-check"></i>
+                                            </button>
                                             }
-                                        </td>
+                                        </label>
+                                        }
 
+                                        @if (Model.isSubPermissionsDeleteUser)
+                                        {
+                                        <button class="btn btn-danger btn-small" title="حذف کاربر">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                        }
 
-
-                                        <td>
-                                            @if (Model.isSubPermissionsEditUser)
-                                            {
-                                                <button class="btn btn-warning btn-small" title="ویرایش اطلاعات کاربر">
-                                                    <i class="fa fa-edit"></i>
-                                                </button>
-                                                <button class="btn btn-danger btn-small" title="حذف کاربر">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                                <button class="btn btn-success btn-small" title="فعال سازی کاربر">
-                                                    <i class="fa fa-check"></i>
-                                                </button>
-                                            }
-                                        </td>
-                                    </tr>
+                                    </td>
+                                </tr>
                                 }
                             </tbod>
                         </table>
@@ -199,81 +229,235 @@ var userCount = Model.UserCount + 1;
 
 @if (Model.isSubPermissionsAddUser)
 {
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <form method="post" asp-area="Admin" asp-controller="Users" asp-action="Index">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">افزودن کاربر</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-lg-6 col-md-6">
-                                <input type="hidden" asp-for="PageNumber" />
-                                <input class="form-control" asp-for="UserEmail" />
-                                <br />
-                                <input class="form-control" asp-for="UserPassworld" />
-                                <br />
-                                <br />
-                                <div asp-validation-summary="All" class="text-red"></div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="post" asp-area="Admin" asp-controller="Users" asp-action="Index">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">افزودن کاربر</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-lg-6 col-md-6">
+                            <div class="box box-warning direct-chat direct-chat-warning">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">اطلاعات</h3>
+                                    <div class="box-tools pull-right">
+
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+
+
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <!-- Conversations are loaded here -->
+                                    <div class="direct-chat-messages">
+                                        <input type="hidden" asp-for="PageNumber" />
+                                        <input class="form-control" asp-for="UserEmail" placeholder="ایمیل" />
+                                        <br />
+                                        <input class="form-control" asp-for="UserPassworld" placeholder="کلمه عبور" />
+                                        <br />
+                                        <br />
+                                        <div asp-validation-summary="All" class="text-red"></div>
+                                    </div>
+                                </div>
+
                             </div>
-                            <div class="col-lg-6 col-md-6">
-                                <div class="box box-warning direct-chat direct-chat-warning">
-                                    <div class="box-header with-border">
-                                        <h3 class="box-title">نقش ها</h3>
-                                        <div class="box-tools pull-right">
+                        </div>
+                        <!--/.direct-chat-messages-->
 
-                                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                                <i class="fa fa-minus"></i>
-                                            </button>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="box box-warning direct-chat direct-chat-warning">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">نقش ها</h3>
+                                    <div class="box-tools pull-right">
+
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
 
 
-                                            <button type="button" class="btn btn-box-tool" data-widget="remove">
-                                                <i class="fa fa-times"></i>
-                                            </button>
-                                        </div>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove">
+                                            <i class="fa fa-times"></i>
+                                        </button>
                                     </div>
-                                    <!-- /.box-header -->
-                                    <div class="box-body">
-                                        <!-- Conversations are loaded here -->
-                                        <div class="direct-chat-messages">
-                                            <!-- Message. Default to the left -->
-                                            @foreach (var role in Model.roleViewModels)
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    <!-- Conversations are loaded here -->
+                                    <div class="direct-chat-messages">
+                                        <!-- Message. Default to the left -->
+                                        @foreach (var role in Model.roleViewModels)
 
-                                            {
+                                        {
 
-                                                <div class="direct-chat-msg">
+                                        <div class="direct-chat-msg">
 
-                                                    <!-- /.direct-chat-img -->
-                                                    <label class="direct-chat-text" style="cursor:pointer;">
-                                                        <input type="checkbox" name="roleId" value="@role.RoleID" />
-                                                        @role.RoleTitle
-                                                    </label>
-                                                    <!-- /.direct-chat-text -->
-                                                </div>
-                                                <!-- /.direct-chat-msg -->
-                                            }
+                                            <!-- /.direct-chat-img -->
+                                            <label class="direct-chat-text" style="cursor:pointer;">
+                                                <input type="checkbox" name="roleId" value="@role.RoleID" />
+                                                @role.RoleTitle
+                                            </label>
+                                            <!-- /.direct-chat-text -->
                                         </div>
-                                        <!--/.direct-chat-messages-->
-
+                                        <!-- /.direct-chat-msg -->
+                                        }
                                     </div>
+                                    <!--/.direct-chat-messages-->
 
                                 </div>
+
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
-                        <input type="reset" class="btn btn-warning" value="خالی کردن فرم" />
-                        <input type="submit" class="btn btn-primary" value="افزودن کاربر" />
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+                    <input type="reset" class="btn btn-warning" value="خالی کردن فرم" />
+                    <input type="submit" class="btn btn-primary" value="افزودن کاربر" />
+                </div>
+            </form>
         </div>
     </div>
+</div>
+}
 
 
+@if (Model.isSubPermissionsEditUser)
+{
+<div class="modal fade" id="DisabledUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="DisabledUserModalLabel">غیر فعال کردن کاربر</h4>
+                <input type="hidden" id="userId" value="" />
+                <input type="hidden" id="userEmail" value="" />
+            </div>
+            <div class="modal-body">
+                <textarea class="form-control" id="Description" maxlength="250" style="min-height:100px" placeholder="توضیحات"></textarea>
+                <ul id="validate"></ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+
+                <input type="button" onclick="DisabledUser($('#userEmail').val(),$('#userId').val())" class="btn btn-primary" value="غیر فعال کردن کاربر" />
+            </div>
+
+        </div>
+    </div>
+</div>
+}
+
+
+@section Scripts{
+
+<script type="text/javascript">
+    function DisabledUserModalShow(userEmail, userID) {
+        $("#DisabledUserModalLabel").html("غیر فعال کردن" + userEmail);
+        $("#userEmail").attr("value", userEmail);
+        $("#userEmail").val(userEmail);
+        $("#userId").attr("value", userID);
+        $("#userId").val(userID);
+    }
+
+    function DisabledUser(userEmail, userID) {
+        var descriptionText = $('textarea#Description').val();
+        var isUserDescriptionValid = isEmptyText(descriptionText);
+        if (!validateEmail(userEmail))
+            return;
+
+        if (userID <= 0)
+            return;
+
+        if (!isUserDescriptionValid) {
+            $("#validate").html("");
+            $("#validate").html("<br/><li class='text-danger'>توضیحات را وارد کنید</li>");
+            return;
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Users/InActiveUser",
+                data: {
+                    userId: userID,
+                    userEmail: userEmail,
+                    description: descriptionText,
+                },
+                success: function (result) {
+                    if (!result) {
+                        alert("خطا در انجام عملیات لطفا دوباره تلاش کنید");
+                    } else {
+                        $("#user_Active_" + userID).html("<div><span class='alert alert-danger'>غیر فعال</span></div>");
+                        $("#userActiveBtn_" + userID).html("<button class='btn btn-success btn-small' onclick=ActiveUser('" + userEmail + "'," + userID + ") title='فعال سازی کاربر'><i class='fa fa-check'></i></button>");
+                        $('#DisabledUserModal').modal('toggle');
+                    }
+                },
+                error: function () {
+                    alert("خطا در ارسال اطلاعات");
+                }
+            });
+        }
+    }
+
+    function ActiveUser(userEmail, userID) {
+
+        if (!validateEmail(userEmail))
+            return;
+
+        if (userID <= 0)
+            return;
+        $.ajax({
+            type: "POST",
+            url: "/Admin/Users/ActivateUser",
+            data: {
+                userId: userID,
+                userEmail: userEmail,
+            },
+            success: function (result) {
+                if (!result) {
+                    alert("خطا در انجام عملیات لطفا دوباره تلاش کنید");
+                } else {
+                    $("#user_Active_" + userID).html("<div><span class='alert alert-success'>فعال</span></div>");
+                    $("#userActiveBtn_" + userID).html("<button onclick=DisabledUserModalShow('"+ userEmail + "'," +userID+") data-toggle='modal' data-target='#DisabledUserModal' class='btn btn-danger btn-small' style='margin-left: 0px' title='غیر فعال سازی کاربر'><i class= 'fa fa-times' ></i></button >")
+                }
+            },
+            error: function () {
+                alert("خطا در ارسال اطلاعات");
+            }
+        });
+    }
+
+
+
+    $('#DisabledUserModal').on('hidden.bs.modal', function () {
+        DisabledUserModal();
+    })
+    function isEmptyText(text) {
+        if (text.trim().length > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    function DisabledUserModal() {
+        var description = $('textarea#Description').val("");
+        $("#validate").html("");
+        $("#userEmail").attr("value", "");
+        $("#userEmail").val("");
+        $("#userId").attr("value", "");
+        $("#userId").val("");
+    }
+
+</script>
 
 }

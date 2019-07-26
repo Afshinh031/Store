@@ -69,7 +69,20 @@ namespace TopLearn.Web.Areas.Admin.Controllers
 
 
         }
-
+        [HttpPost]
+        [PermissionChecker("EditUsers")]
+        public bool ActivateUser(int userId, string userEmail) {
+            if (!userEmail.IsValidEmail()|| string.IsNullOrEmpty(userEmail)|| userId <= 0)
+                return false;
+            return _userService.ActivateUser(userId, userEmail, null,true);
+        }
+        [HttpPost]
+        [PermissionChecker("EditUsers")]
+        public bool InActiveUser(int userId, string userEmail,string description) {
+            if (!userEmail.IsValidEmail()|| string.IsNullOrEmpty(description)|| string.IsNullOrEmpty(userEmail)|| userId <= 0)
+                return false;
+            return _userService.ActivateUser(userId, userEmail, description,false);
+        }
 
         private UserAdminPanelViewModel GetUserInfo(int pageNumber = 1)
         {
@@ -77,12 +90,14 @@ namespace TopLearn.Web.Areas.Admin.Controllers
             int userId = Convert.ToInt32(User.Identity.Name);
             UserAdminPanelViewModel userAdminPanelViewModel = new UserAdminPanelViewModel();
             userAdminPanelViewModel.UserModel = _userService.GetAllUser(skip, 10, userId, false);
+            userAdminPanelViewModel.userInactiveViewModels = _userService.GetUsersInactive(skip, 10);
             userAdminPanelViewModel.UserInactiveCount = userAdminPanelViewModel.UserModel.Where(u => u.UserIsActive == false).Count();
             userAdminPanelViewModel.UserCount = userAdminPanelViewModel.UserModel.Count;
             userAdminPanelViewModel.roleViewModels = _roleService.GetAllRoles();
             userAdminPanelViewModel.PageNumber = pageNumber;
             userAdminPanelViewModel.isSubPermissionsAddUser = _permissionService.CheckPermission("AddUsers", userId);
             userAdminPanelViewModel.isSubPermissionsEditUser = _permissionService.CheckPermission("EditUsers", userId);
+            userAdminPanelViewModel.isSubPermissionsDeleteUser = _permissionService.CheckPermission("DeleteUsers", userId);
             return userAdminPanelViewModel;
         }
         private string CheckUserInfo(UserAdminPanelViewModel userAdminPanelViewModel)

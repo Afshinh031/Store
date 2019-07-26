@@ -103,7 +103,7 @@ namespace TopLearn.Core.Services.Service
                 UserImage = u.UserImage,
                 UserIsActive = u.UserIsActive,
                 UserName = u.UserName,
-               
+               UserDescription=u.UserDescription,
                 UserAbout = u.UserAbout
             }).OrderByDescending(o => o.UserDateTime).Skip(skip).Take(take).ToList();
         }
@@ -117,6 +117,22 @@ namespace TopLearn.Core.Services.Service
                 rolesTitle.Add(_context.Roles.Where(x => x.RoleID == roleId).Select(x => x.RoleTitle).SingleOrDefault());
             }
             return rolesTitle;
+        }
+
+        public bool ActivateUser(int userId, string userEmail, string description, bool isActiva)
+        {
+            User user = GetUserById(userId);
+            if (user == null || user.UserEmail != userEmail)
+                return false;
+            UserRepository _userRepository = new UserRepository(_context);
+            user.UserIsActive = isActiva;
+            user.UserDescription = description;
+            if (_userRepository.UpdateUser(user))
+            {
+                _userRepository.SaveUser();
+                return true;
+            }
+            return false;
         }
     }
 
