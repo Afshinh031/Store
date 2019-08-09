@@ -83,7 +83,13 @@ namespace TopLearn.Web.Areas.Admin.Controllers
                 return false;
             return _userService.ActivateUser(userId, userEmail, description,false);
         }
-
+        [HttpPost]
+        [PermissionChecker("DeleteUsers")]
+        public string DeleteUser(int userId) {
+            if (!_userService.UserIsExist(userId))
+                return "notfund";
+            return _userRepository.DeleteUser(userId);
+        }
         private UserAdminPanelViewModel GetUserInfo(int pageNumber = 1)
         {
             int skip = (pageNumber - 1) * 10;

@@ -44,7 +44,7 @@ namespace TopLearn.Core.Services.Service
 
         public bool LoginUser(LoginViewModel login)
         {
-            return _context.Users.Any(u => u.UserEmail == login.UserEmail.ToLower() && u.UserPassword == login.UserPassword.ToEncodePasswordMd5() && u.UserIsActive==true && u.isDelete==false);
+            return _context.Users.Any(u => u.UserEmail == login.UserEmail.ToLower() && u.UserPassword == login.UserPassword.ToEncodePasswordMd5() && u.UserIsActive == true && u.isDelete == false);
         }
 
         public User GetUserByEmail(string email)
@@ -54,7 +54,7 @@ namespace TopLearn.Core.Services.Service
 
         public User GetUserByActiveCode(string activeCode)
         {
-            return _context.Users.SingleOrDefault(u => u.UserEmailConfigurationCode == activeCode && u.isDelete==false);
+            return _context.Users.SingleOrDefault(u => u.UserEmailConfigurationCode == activeCode && u.isDelete == false);
         }
 
         public string GetUserFristNameById(int userId)
@@ -74,12 +74,12 @@ namespace TopLearn.Core.Services.Service
 
         public bool UserNameIsExist(string userName)
         {
-            return _context.Users.Any(u => u.UserName == userName && u.isDelete==false);
+            return _context.Users.Any(u => u.UserName == userName && u.isDelete == false);
         }
 
         public List<UserInactiveViewModel> GetUsersInactive(int skip, int take)
         {
-            return _context.Users.Where(u => u.UserIsActive == false && u.isDelete==false).Select(u => new UserInactiveViewModel
+            return _context.Users.Where(u => u.UserIsActive == false && u.isDelete == false).Select(u => new UserInactiveViewModel
             {
                 UserDateTime = u.UserDateTime,
                 UserDescription = u.UserDescription,
@@ -89,9 +89,9 @@ namespace TopLearn.Core.Services.Service
             }).OrderByDescending(o => o.UserDateTime).Skip(skip).Take(take).ToList();
         }
 
-        public  List<UserViewModel> GetAllUser(int skip, int take, int userOnline, bool isDelete)
+        public List<UserViewModel> GetAllUser(int skip, int take, int userOnline, bool isDelete)
         {
-            return  _context.Users.Where(u=>u.UserID != userOnline  && u.isDelete == isDelete).Select(u => new UserViewModel
+            return _context.Users.Where(u => u.UserID != userOnline && u.isDelete == isDelete).Select(u => new UserViewModel
             {
                 UserId = u.UserID,
                 UserEmail = u.UserEmail,
@@ -103,7 +103,7 @@ namespace TopLearn.Core.Services.Service
                 UserImage = u.UserImage,
                 UserIsActive = u.UserIsActive,
                 UserName = u.UserName,
-               UserDescription=u.UserDescription,
+                UserDescription = u.UserDescription,
                 UserAbout = u.UserAbout
             }).OrderByDescending(o => o.UserDateTime).Skip(skip).Take(take).ToList();
         }
@@ -111,9 +111,10 @@ namespace TopLearn.Core.Services.Service
         public List<string> GetUserRolesTitle(int userId)
         {
             List<int> rolesId = new List<int>();
-            rolesId=_context.UserRoles.Where(r=>r.UserID==userId).Select(r=>r.RoleID).ToList();
+            rolesId = _context.UserRoles.Where(r => r.UserID == userId).Select(r => r.RoleID).ToList();
             List<string> rolesTitle = new List<string>();
-            foreach (var roleId in rolesId) {
+            foreach (var roleId in rolesId)
+            {
                 rolesTitle.Add(_context.Roles.Where(x => x.RoleID == roleId).Select(x => x.RoleTitle).SingleOrDefault());
             }
             return rolesTitle;
@@ -134,6 +135,11 @@ namespace TopLearn.Core.Services.Service
             }
             return false;
         }
+
+        public bool UserIsExist(int userId)
+        {
+            return _context.Users.Any(u => u.UserID == userId);
+        }
     }
 
 
@@ -153,7 +159,7 @@ namespace TopLearn.Core.Services.Service
                 _context.SaveChanges();
                 return user.UserID;
             }
-            catch 
+            catch
             {
                 return 0;
             }
@@ -173,18 +179,19 @@ namespace TopLearn.Core.Services.Service
             }
         }
 
-        public bool DeleteUser(int userId)
+        public string DeleteUser(int userId)
         {
             try
             {
-                User user = _context.Users.Where(u => u.UserID == userId).SingleOrDefault();
+                User user = GetUserById(userId);
                 user.isDelete = true;
                 UpdateUser(user);
-                return true;
+                SaveUser();
+                return "1";
             }
             catch (Exception e)
             {
-                return false;
+                return e.Message;
             }
         }
 
@@ -219,6 +226,11 @@ namespace TopLearn.Core.Services.Service
             {
                 return false;
             }
+        }
+
+
+        private User GetUserById(int userId) {
+            return _context.Users.SingleOrDefault(u => u.UserID == userId);
         }
     }
 }

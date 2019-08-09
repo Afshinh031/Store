@@ -19,6 +19,7 @@ namespace TopLearn.Core.Services.Interfaces
         User GetUserByEmail(string email);
         User GetUserByActiveCode(string activeCode);
         bool LoginUser(LoginViewModel login);
+        bool UserIsExist(int userId);
         bool UserNameIsExist(string userName);
         List<string> GetUserRolesTitle(int userId);
 
@@ -33,7 +34,7 @@ namespace TopLearn.Core.Services.Interfaces
 
         bool UpdateUser(User user);
 
-        bool DeleteUser(int userId);
+        string DeleteUser(int userId);
 
 
         void SaveUser();
